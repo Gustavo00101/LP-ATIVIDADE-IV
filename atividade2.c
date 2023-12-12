@@ -2,87 +2,101 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include <time.h>
 
-
-#define MAX_CHARACTER 200
-#define MAX_NOTE 2
-#define MAX_DATA 5
-
-struct escola {
-    char dataDeNascimento[MAX_CHARACTER];
-    char nome[MAX_CHARACTER];
-    float nota[MAX_NOTE];
-    float mediaEscola;
+struct dados_alunos
+{
+    char dataDeNascimento[250];
+    char nome[200];
+    float nota[5];
+    float media;
 };
-void cabecalho ( ) {
-    system ("cls || clear");
-    printf ("Bem-Vindo ao DevSchool++\n\n");
+
+void titulo()
+{
+    system("cls || clear");
+    printf("Programa Aprovado/Reprovado\n");
 }
-float mediaFinal (float numero[]) {
+
+float calcularMedia(float numero[])
+{
     int i;
     float soma = 0, media;
 
-    for (i = 0; i < MAX_NOTE; i++) {
+    for (i = 0; i < 2; i++)
+    {
         soma += numero[i];
     }
-    return media = soma / (float) MAX_NOTE;
+    return media = soma / 2;
 }
-char* situacao (float mediaE) {
-    char classe[MAX_CHARACTER];
 
-    if (mediaE >= 7) {
-        strcpy (classe, "Aprovado");
-    
-    } else {
-        strcpy (classe, "Reprovado"); }
-    
-    return classe;
-}
-int main ( ) {
-    setlocale (LC_ALL, "portuguese");
+char *conceito(float valor)
+{
+    char turma[250];
 
-   
-
-    int i, j;
-    struct escola estudante[MAX_DATA];
-
- 
-
-    cabecalho ( );
-    for (i = 0; i < MAX_DATA; i++) {
-        printf ("Digite o nome do %dº estudante: ", i+1);
-        gets (estudante[i].nome);
-        printf ("Digite a data de nascimento do estudante (DD/MM/AAAA): ");
-        gets (estudante[i].dataDeNascimento);
-
-        for (j = 0; j < MAX_NOTE; j++) {
-            do {
-                printf ("Digite a %dª nota: ", j+1);
-                scanf ("%f", &estudante[i].nota[j]);
-
-                if (estudante[i].nota[j] < 0 || estudante[i].nota[j] > 10) {
-                    printf ("\nNota Inválida (Nota válida entre 0 e 10)\n\n"); }
-
-            } while (estudante[i].nota[j] < 0 || estudante[i].nota[j] > 10);
-        }
-        fflush (stdin);
-        printf ("\n");
-    
-        estudante[i].mediaEscola = mediaFinal(estudante[i].nota);
+    if (valor >= 7)
+    {
+        strcpy(turma, "Aprovado!!");
+    }
+    else
+    {
+        strcpy(turma, "Reprovado!!");
     }
 
+    return turma;
+}
 
-    cabecalho ( );
-    for (i = 0; i < MAX_DATA; i++) {
-        printf ("Nome do %dº estudante: %s\n\n", i+1, estudante[i].nome);
-        printf ("Data de nascimento: %d\n", estudante[i].dataDeNascimento);
+int main()
+{
+    setlocale(LC_ALL, "portuguese");
 
-        for (j = 0; j < MAX_NOTE; j++) {
-            printf ("%dª nota: %.2f\n", j+1, estudante[i].nota[j]);
+    // Vari�veis
+
+    int i, j;
+    struct dados_alunos aluno[5];
+
+    // Comandos
+
+    titulo();
+    printf("\n");
+    for (i = 0; i < 5; i++)
+    {
+        printf("Nome do %dº aluno: ", i + 1);
+        gets(aluno[i].nome);
+        printf("Data de nascimento: ");
+        gets(aluno[i].dataDeNascimento);
+
+        for (j = 0; j < 2; j++)
+        {
+            do
+            {
+                printf("Digite a %dº nota: ", j + 1);
+                scanf("%f", &aluno[i].nota[j]);
+
+                if (aluno[i].nota[j] < 0 || aluno[i].nota[j] > 10)
+                {
+                    printf("Nota inválida!\n");
+                }
+
+            } while (aluno[i].nota[j] < 0 || aluno[i].nota[j] > 10);
         }
-        printf ("Média: %.2f\n", estudante[i].mediaEscola);
-        printf ("Situação: %s\n\n", situacao (estudante[i].mediaEscola));
+        fflush(stdin);
+        printf("\n");
+
+        aluno[i].media = calcularMedia(aluno[i].nota);
+    }
+
+    titulo();
+    printf("\n");
+    for (i = 0; i < 5; i++)
+    {
+        printf("Nome do %dº aluno: %s\n", i + 1, aluno[i].nome);
+        printf("Data de nascimento: %s\n", aluno[i].dataDeNascimento);
+        for (j = 0; j < 2; j++)
+        {
+            printf("%dº nota: %.2f\n", j + 1, aluno[i].nota[j]);
+        }
+        printf("Média: %.2f\n", aluno[i].media);
+        printf("%s\n\n", conceito(aluno[i].media));
     }
 
     return 0;
