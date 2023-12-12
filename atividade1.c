@@ -1,50 +1,58 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#define tamanho 3
+#include <locale.h>
 
-struct Contato {
+struct dados_contatos
+{
     char nome[200];
-    char telefone[20];
+    char telefone[200];
     char email[200];
 };
 
-void cadastrar_contatos(struct Contato contatos[]) {
+void buscartelofonepelonome(struct dados_contatos contato[], char *contatodesejado)
+{
     int i;
-    for ( i = 0; i < tamanho; i++) {
-        printf("Digite o nome do contato %dº: ", i + 1);
-        scanf("%s", contatos[i].nome);
-        printf("Digite o telefone do contato %dº: ", i + 1);
-        scanf("%s", contatos[i].telefone);
-        printf("Digite o email do contato %dº: ", i + 1);
-        scanf("%s", contatos[i].email);
-    }
-}
 
-char* buscar_telefone(struct Contato contatos[], char nome[]) {
-    int i;
-    
-    for ( i = 0; i < tamanho; i++) {
-        if (strcmp(contatos[i].nome, nome) == 0) {
-            return contatos[i].telefone;
+    for (i = 0; i < 3; i++)
+    {
+        if (strcmp(contato[i].nome, contatodesejado) == 0)
+        {
+            printf("Telefone de %s: %s \n", contato[i].nome, contato[i].telefone);
+            return;
         }
     }
-    return NULL;
+    printf("Contato não encontrado. \n");
 }
 
-int main() {
-    struct Contato contatos[tamanho];
-    cadastrar_contatos(contatos);
+int main()
+{
+    setlocale(LC_ALL, "portuguese");
 
-    char nome[50];
-    printf("Digite o nome do contato que deseja buscar: ");
-    scanf("%s", nome);
+    char contatodesejado[200];
+    int i;
 
-    char* telefone = buscar_telefone(contatos, nome);
-    if (telefone != NULL) {
-        printf("O telefone de %s é %s.\n", nome, telefone);
-    } else {
-        printf("Não foi encontrado nenhum contato com o nome %s.\n", nome);
+    struct dados_contatos contato[3];
+
+    for (i = 0; i < 3; i++)
+    {
+        fflush(stdin);
+
+        printf("\n");
+        printf("Digite o nome do usuario: \n");
+        gets(contato[i].nome);
+
+        printf("Digite o telefone: \n");
+        gets(contato[i].telefone);
+
+        printf("Informe a email: \n");
+        gets(contato[i].email);
     }
+
+    printf("Digite o nome do contato que deseja buscar:");
+    gets(contatodesejado);
+
+    buscartelofonepelonome(contato, contatodesejado);
 
     return 0;
 }
